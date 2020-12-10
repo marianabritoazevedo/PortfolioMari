@@ -1,0 +1,310 @@
+* {
+    font-family: 'Asap', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #fafafa;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.clear {
+    clear: both;
+}
+
+nav {
+    display: none !important;
+}
+
+.vertical-nav {
+    min-width: 250px;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s;
+    background-color: #d2f6f7;
+}
+
+.social-media img {
+    width: 33px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.social-media img:hover {
+    background-color: #48BBBE;
+}
+
+#sidebar ul li a:hover,
+#navbarSite ul li a:hover {
+    background-color: #48BBBE;
+    color: white !important;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+.page-content {
+    width: calc(100% - 250px);
+    margin-left: 250px;
+    transition: all 0.4s;
+    background-image: url(../img/bg-verde.jpg);
+    background-position: center;
+}
+
+.page-content-sobre,
+.page-footer,
+.page-content-port {
+    width: calc(100% - 250px);
+    margin-left: 250px;
+    transition: all 0.4s;
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#content.active,
+#content2.active,
+#content3.active {
+    width: 100%;
+    margin: 0;
+}
+
+.media img {
+    width: 100px;
+    border-radius: 50%;
+}
+
+.page-content-sobre h2 {
+    border-left: 5px solid #48BBBE;
+    padding-left: 8px;
+}
+
+.jumbotron {
+    background: #fafafa !important;
+}
+
+.jumbotron .nav-item a {
+    color: #323232 !important;
+    background-color: #d2f6f7;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.jumbotron .nav-pills .nav-link.active {
+    background-color: #48BBBE !important;
+    color: #fff !important;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.bg-green-progress {
+    background-color: #48BBBE !important;
+}
+
+.img-habilidade h5 {
+    position: relative;
+    top: 5px;
+    padding-left: 3px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.card {
+    background-color: #e9ecef !important;
+    border: 0;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.5s;
+}
+
+.card:hover {
+    background-color: #e2e2e2 !important;
+    transition: 0.5s;
+}
+
+.img-card-symbol img {
+    margin-top: 100px;
+    margin-bottom: -50px;
+    width: 120px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.card-body a {
+    background-color: #48BBBE !important;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: 0.4s;
+}
+
+.card-body a:hover,
+.button-port:hover {
+    background-color: #017c80 !important;
+    transition: 0.4s;
+}
+
+.button-port {
+    background-color: #48BBBE !important;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 10px;
+    transition: 0.4s;
+}
+
+.form-nome,
+.form-email,
+.form-assunto {
+    width: 100%;
+    display: block;
+    margin: 8px 10px;
+    border: 1px solid #e2e2e2;
+    box-shadow: 3px 3px 9px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding-left: 6px;
+    height: 35px;
+}
+
+textarea {
+    width: 100%;
+    display: block;
+    margin: 10px;
+    border: 1px solid #e2e2e2;
+    box-shadow: 3px 3px 9px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding-left: 6px;
+    height: 120px;
+    resize: none;
+}
+
+.form-nome:focus,
+.form-email:focus,
+.form-assunto:focus,
+.form-text:focus {
+    box-shadow: 0 0 0 0 !important;
+    border: 0 none !important;
+    outline: 0 !important;
+    border: 2px solid #48BBBE !important;
+}
+
+
+/*Portfólio*/
+
+.busca {
+    width: 450px;
+    height: 70px;
+    filter: drop-shadow(0px 4px 4px rgba(23, 79, 82, 0.4));
+    margin-right: -30px;
+}
+
+.input-busca {
+    height: 45px;
+    width: 400px;
+    border-radius: 15px;
+    border: 0;
+    outline: 0;
+    position: relative;
+}
+
+.botao-busca {
+    height: 45px;
+    width: 60px;
+    background-color: #1c878a;
+    border-radius: 10px;
+    border: none;
+    position: absolute;
+    right: 50px;
+    cursor: pointer;
+}
+
+.botao-busca:hover {
+    background-color: #127073;
+}
+
+@media screen and (max-width: 1000px) {
+    nav {
+        display: block !important;
+    }
+    .vertical-nav {
+        display: none !important;
+    }
+    .inicio button {
+        display: none !important;
+    }
+    .busca button {
+        display: inline-block !important;
+    }
+    .busca button img {
+        display: inline-block !important;
+    }
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #content {
+        width: 100%;
+        margin: 0;
+    }
+    #content.active {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+    #content2,
+    #content3 {
+        width: 100%;
+        margin: 0;
+    }
+    #content2.active,
+    #content3.active {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+    .inicio img {
+        display: none;
+    }
+    .busca {
+        width: 300px;
+        margin-right: 0;
+    }
+    .input-busca {
+        width: 250px;
+    }
+    .botao-busca {
+        right: 30px;
+    }
+    .search-bar h4 {
+        text-align: center;
+    }
+}
+
+
+/*Responsividade cards*/
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .card-deck .card {
+        -ms-flex: 0 0 100% !important;
+        flex: 0 0 100% !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .card-deck .card {
+        -ms-flex: 0 0 45% !important;
+        flex: 0 0 45% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-deck .card {
+        -ms-flex: 0 0 30% !important;
+        flex: 0 0 30% !important;
+    }
+}
