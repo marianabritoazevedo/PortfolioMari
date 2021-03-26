@@ -1,4 +1,7 @@
 {% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,12 +24,13 @@
 </head>
 
 <body>
+    {% if LANGUAGE_CODE == 'pt-br' %}
     <div class="vertical-nav" id="sidebar">
         <div class="py-3 px-3 mb-2">
             <div class="media d-flex align-items-center"><img class="mx-auto mb-3" src="{% static 'img/logo.PNG' %}" alt=""></div>
             <div class="media-body">
                 <h4 class="text-center">Mariana Brito Azevedo</h4>
-                <p class="text-center">Desenvolvedora Web</p>
+                <p class="text-center">Programadora</p>
             </div>
         </div>
         <ul class="nav flex-column mb-0">
@@ -51,6 +55,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{% url 'port:certificado' %}" class="nav-link text-dark">
+                    <i class="fas fa-certificate"></i> Certificados
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="#contato" class="nav-link text-dark">
                     <i class="fas fa-phone"></i> Contato
                 </a>
@@ -63,6 +72,25 @@
             <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
         </div>
         <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+        <div class="d-flex justify-content-center mx-auto">
+            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                    <option value="" selected disabled>Idioma</option>
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Trocar" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+            </form>
+        </div>
+        
+        
     </div>
     <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark" style="background-color: #1c878a;">
         <div class="container">
@@ -93,6 +121,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{% url 'port:certificado' %}" class="nav-link text-dark">
+                            <i class="fas fa-certificate"></i> Certificados
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#contato" class="nav-link text-dark">
                             <i class="fas fa-phone"></i> Contato
                         </a>
@@ -105,6 +138,24 @@
                     <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
                 </div>
                 <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+                <div class="d-flex justify-content-center mx-auto">
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                        <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                            <option value="" selected disabled>Idioma</option>
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Trocar" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+                    </form>
+                </div>
+                
             </div>
             <!--collapse navbar-collapse-->
         </div>
@@ -116,7 +167,7 @@
                 <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i>Menu</button>
                 <h1 class="pt-5">Mariana Brito Azevedo</h1>
                 <h3>
-                    <a href="" class="typewrite" data-period="2000" data-type='[ "Desenvolvedora Back-end", "Programadora Front-end", "UX/UI designer", "Pesquisadora desenvolvimento web" ]' style="color: #323232; text-decoration: none;">
+                    <a href="" class="typewrite" data-period="2000" data-type='[ "Desenvolvedora Back-end", "Estudante de computação", "Programadora", "Pesquisadora desenvolvimento web" ]' style="color: #323232; text-decoration: none;">
                         <span class="wrap"></span>
                     </a>
                 </h3>
@@ -132,10 +183,8 @@
     </div>
     <div class="page-content-sobre" id="content2">
         <div class="container pt-5" id="sobre">
-            <h2>Sobre Mim</h2>
-            <p class="pt-3 text-justify">Graduanda em Ciências e Tecnologia pela Universidade Federal do Rio Grande do Norte (UFRN) e técnica em Automação Industrial pelo Instituto Metrópole Digital (IMD). Atualmente, é assessora back-end da Empresa Júnior da Escola de Ciências e
-                Tecnologia (EJECT), responsável pelo desenvolvimento de sites e sistemas com a linguagem de programação Python (framework Django). Ademais, é bolsista de iniciação científica da UFRN no projeto "Desenvolvimento de tecnologia web para a
-                metodologia Sci2Biz", responsável pela construção de uma plataforma a partir de ferramentas de programação web, e atua como monitora pró-bono da disciplina de Gestão e Economia da Ciência, Tecnologia e Inovação na UFRN.</p>
+            <h2>{{sobremim.titulo_port}}</h2>
+            <p class="pt-3 text-justify">{{sobremim.texto_port}}</p>
             <h2 class="mt-5">Formação</h2>
             <div class="jumbotron jumbotron-fluid">
                 <div class="row">
@@ -161,39 +210,30 @@
                             <div class="tab-pane fade show active" id="nav-item-01" role="tabpanel">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h3>UFRN</h3>
-                                        <p>Graduanda do 3º período do Bacharelado em Ciências e Tecnologia (BCT) na Universidade Federal do Rio Grande do Norte (UFRN). Próximo semestre, pretende iniciar a ênfase de computação do curso de Ciências e Tecnologia.</p>
-                                        <h3>IMD</h3>
-                                        <p>Técnica em Automação Industrial pelo Instituto Metrópole Digital (IMD). Ademais, possui formação como Programadora de Dispositivos Móveis no curso dos Novos caminhos, também oferecido pelo IMD.</p>
+                                        {% for formacao in form_academica %}
+                                        <h3>{{formacao.subtitulo_port}}</h3>
+                                        <p>{{formacao.texto_port}}</p>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-item-02" role="tabpanel">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h3>EJECT</h3>
-                                        <p>Atualmente, atua como desenvolvedora back-end da Empresa Júnior da Escola de Ciências e Tecnologia, responsável pelo desenvolvimento e programação de sites e sistemas com a linguagem de programação Python (framework
-                                            Django).
-                                        </p>
-                                        <h3>Bolsa de Pesquisa</h3>
-                                        <p>Atua como pesquisadora de desenvolvimento web no Projeto "Desenvolvimento de tecnologia web para a metodologia Sci2Biz", responsável pelo estudo e aplicação de tecnologias web para a criação de uma plataforma responsável
-                                            por incentivar a divulgação e melhoria das pesquisas científicas da UFRN.</p>
-                                        <h3>Monitoria</h3>
-                                        <p>Atuou entre Março e Agosto de 2020 como monitora das disciplinas de Pré-Cálculo e Cálculo I na Escola de Ciências e Tecnologia</p>
+                                        {% for formacao in form_profissional %}
+                                        <h3>{{formacao.subtitulo_port}}</h3>
+                                        <p>{{formacao.texto_port}}</p>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-item-03" role="tabpanel">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h3>Programação Web</h3>
-                                        <p>Certificação online em cursos de programação web, tanto do front-end quanto do back-end, emitidos pelo Alura e pela Danki Code. Os cursos envolvem HTML5, CSS3, Javascript, Bootstrap e Python com Framework Django.</p>
-                                        <h3>Arduíno</h3>
-                                        <p>Curso presencial de Arduíno na ITM Robótica Aplicada, com carga horária de 20 horas.</p>
-                                        <h3>CodeIOT</h3>
-                                        <p>Certificação online nos cursos de "Programação Física com Arduíno", "Introdução à Internet das Coisas" e "Eletrônica: conceitos e componentes básicos", emitido pelo CodeIOT.</p>
-                                        <h3>Pacote Office</h3>
-                                        <p>Certificações online em cursos de Excel, Word e Powerpoint (nível avançado) emitidos pela Fundação Bradesco.</p>
+                                        {% for formacao in form_complementar %}
+                                        <h3>{{formacao.subtitulo_port}}</h3>
+                                        <p>{{formacao.texto_port}}</p>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -225,8 +265,8 @@
                     <img src="{% static 'img/javascript.png' %}" alt="" class="mb-2">
                     <h5>JavaScript</h5>
                     <div class="progress mb-4">
-                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
-                            50%
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%">
+                            30%
                         </div>
                     </div>
                 </div>
@@ -270,59 +310,31 @@
                     <img src="{% static 'img/csharp.png' %}" alt="" class="mb-2">
                     <h5>C#</h5>
                     <div class="progress mb-4">
-                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
-                            70%
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
+                            60%
                         </div>
                     </div>
                 </div>
             </div>
             <h2 class="my-5" id="portfolio">Porfólio</h2>
             <div class="row justify-content-sm-center">
+                {% for card in card_port %}
                 <div class="col-md-6 col-lg-4">
                     <div class="card mb-5">
                         <div class="img-card-symbol">
-                            <img src="{% static 'img/uxui2.png' %}" alt="">
+                            <img src="{{card.img_card.url}}" alt="">
                         </div>
                         <div class="card-body">
-                            <h3 class="card-title text-center">UX/UI Design</h3>
+                            <h3 class="card-title text-center">{{card.titulo_port}}</h3>
                             <hr>
-                            <p class="card-text text-center">Estudo de tecnologias voltadas para a experiência e interface do usuário.</p>
+                            <p class="card-text text-center">{{card.subtitulo_port}}</p>
                         </div>
                         <div class="card-body mt-3 text-right">
-                            <a href="#" class="card-link" data-toggle="modal" data-target="#siteModal1">Saiba mais</a>
+                            <a href="#" class="card-link" data-toggle="modal" data-target="#siteModal-{{card.id}}">Saiba mais</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card mb-5">
-                        <div class="img-card-symbol">
-                            <img src="{% static 'img/frontend2.png' %}" alt="">
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title text-center">Front-End</h3>
-                            <hr>
-                            <p class="card-text text-center">Uso de linguagens para desenvolver e estilizar o visual de um site.</p>
-                        </div>
-                        <div class="card-body mt-3 text-right">
-                            <a href="#" class="card-link" data-toggle="modal" data-target="#siteModal2">Saiba mais</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card mb-5">
-                        <div class="img-card-symbol">
-                            <img src="{% static 'img/backend2.png'%}" alt="">
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title text-center">Back-End</h3>
-                            <hr>
-                            <p class="card-text text-center">Programação do banco de dados e requisições do site.</p>
-                        </div>
-                        <div class="card-body mt-3 text-right">
-                            <a href="#" class="card-link" data-toggle="modal" data-target="#siteModal3">Saiba mais</a>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
                 <div class="row">
                     <div class="col-12">
                         <p class="text-center">Para conferir alguns dos meus trabalhos realizados em tais áreas, acesse meu portfólio abaixo!</p>
@@ -334,17 +346,17 @@
             <h4 class="text-center">Envie-me uma mensagem!</h4>
             <form method="POST">
                 <div class="row">
-                    {% if form.is_valid %}
+                    {% if show_script %}
                     <script type="text/javascript">
-                        alert("Sua mensagem foi enviado com sucesso!")
+                        alert("Sua mensagem foi enviada com sucesso!")
                     </script>
-                    {% endif %} {% csrf_token %} {% for field in form %} {{ field }} {% endfor %}
+                    {% endif %} {% csrf_token %} {% for field in form_port %} {{ field }} {% endfor %}
                     <!--<input type="text" id="inputNome" class="form-nome" placeholder="Seu nome...">
                     <input type="text" id="inputEmail" class="form-email" placeholder="Seu e-mail...">
                     <input type="text" id="inputAssunto" class="form-assunto" placeholder="Assunto do e-mail...">
                     <textarea name="" id="inputText" class="form-text" placeholder="Sua mensagem..."></textarea>-->
                 </div>
-                <button class="btn button-port mt-2 mb-5" type="submit"><i class="fas fa-paper-plane mr-2 mt-1"></i>Enviar</button>
+                <button class="btn button-port mt-2 mb-5" type="submit" name='button-port'><i class="fas fa-paper-plane mr-2 mt-1"></i>Enviar</button>
             </form>
         </div>
     </div>
@@ -354,21 +366,366 @@
         </div>
     </div>
 
+
+
+    {% else %}
+
+
+
+    <div class="vertical-nav" id="sidebar">
+        <div class="py-3 px-3 mb-2">
+            <div class="media d-flex align-items-center"><img class="mx-auto mb-3" src="{% static 'img/logo.PNG' %}" alt=""></div>
+            <div class="media-body">
+                <h4 class="text-center">Mariana Brito Azevedo</h4>
+                <p class="text-center">Programmer</p>
+            </div>
+        </div>
+        <ul class="nav flex-column mb-0">
+            <li class="nav-item">
+                <a href="#home" class="nav-link text-dark">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#sobre" class="nav-link text-dark">
+                    <i class="fa fa-user-circle"></i> About Me
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#habilidades" class="nav-link text-dark">
+                    <i class="fas fa-code"></i> Skills
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#portfolio" class="nav-link text-dark">
+                    <i class="fas fa-folder-open"></i> Portfolio
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'port:certificado' %}" class="nav-link text-dark">
+                    <i class="fas fa-certificate"></i> Certificates
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#contato" class="nav-link text-dark">
+                    <i class="fas fa-phone"></i> Contact
+                </a>
+            </li>
+        </ul>
+        <h5 class="py-2 text-center">Social Media</h5>
+        <div class="social-media d-flex justify-content-center mx-auto" style="display: inline-block;">
+            <a href="https://instagram.com/maribazevedo_/" target="_blank"><img src="{% static 'img/insta.png' %}" alt="" class="mx-1"></a>
+            <a href="https://api.whatsapp.com/send?phone=5584988234626" target="_blank"><img src="{% static 'img/wpp.png' %}" alt="" class="mx-1"></a>
+            <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
+        </div>
+        <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+        <div class="d-flex justify-content-center mx-auto">
+            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                    <option value="" selected disabled>Language</option>
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Change" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+            </form>
+        </div>
+        
+    </div>
+    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark" style="background-color: #1c878a;">
+        <div class="container">
+            <a href="#" class="navbar-brand h1 mb-0">Mariana Brito Azevedo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSite">
+                <ul class="navbar-nav ml-auto text-center">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link text-dark">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#sobre" class="nav-link text-dark">
+                            <i class="fa fa-user-circle"></i> About Me
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#habilidades" class="nav-link text-dark">
+                            <i class="fas fa-code"></i> Skills
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#portfolio" class="nav-link text-dark">
+                            <i class="fas fa-folder-open"></i> Portfolio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'port:certificado' %}" class="nav-link text-dark">
+                            <i class="fas fa-certificate"></i> Certificates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contato" class="nav-link text-dark">
+                            <i class="fas fa-phone"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                <h5 class="py-2 text-center">Social Media</h5>
+                <div class="social-media d-flex justify-content-center mx-auto" style="display: inline-block;">
+                    <a href="https://instagram.com/maribazevedo_/" target="_blank"><img src="{% static 'img/insta.png' %}" alt="" class="mx-1"></a>
+                    <a href="https://api.whatsapp.com/send?phone=5584988234626" target="_blank"><img src="{% static 'img/wpp.png' %}" alt="" class="mx-1"></a>
+                    <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
+                </div>
+                <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+                <div style="margin-left: 30px;">
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" style="margin-left: 30px;"/>
+                        <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                            <option value="" selected disabled>Language</option>
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Go" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+                    </form>
+                </div>
+            </div>
+            <!--collapse navbar-collapse-->
+        </div>
+        <!--container-->
+    </nav>
+    <div class="page-content p-5" id="content">
+        <div class="container">
+            <div class="inicio" id="home">
+                <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i>Menu</button>
+                <h1 class="pt-5">Mariana Brito Azevedo</h1>
+                <h3>
+                    <a href="" class="typewrite" data-period="2000" data-type='[ "Back-end Developer", "Computer Engineering Student", "Programmer", "Web Development Researcher" ]' style="color: #323232; text-decoration: none;">
+                        <span class="wrap"></span>
+                    </a>
+                </h3>
+                <div class="buttons pt-5" style="display: inline-block;">
+                    <a href="{% url 'port:index' %}"><button class="btn btn-light bg-white rounded-pill shadow-sm mr-2"><i class="fas fa-folder-open mr-2"></i>Portfolio</button></a>
+                    <a href="http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K2874173U7&tokenCaptchar=03AGdBq24c42xWltJX0O8zdOoh-MNIRt717i2RAoqHceH17YoC_sZplru6bNcg0-tiI16r_0RhDEU3jE9QEPb3WlFLC_4Vsh-mRKBzY8TOT_Yvh6V4opGnsMNeiVJcUciPDFkNLyzAQwAiHJSIHE2tCY46-ABVUyMIFPF48-LaKG865MMsVHeVxJza7ZwP7PCJujBELnsJZcQo6VSDpNSxztSLSVtxmO4r8J6XmOPXD885L6T1Yyf17Yq9-oZru_PDF0ODjZ-OVYwDq6xUzQxmRUpTk-Du0PEEGrN03Bj30DvOJBiZa7rvfjwPBaT2Kq97-s3GXaEbg0SEPHrpcvYJUjdXFcs1RHYXWn_KuGz21RNBVkqFxNPqyA_dte39T9MXqUijiLfemGADUkj3uvcVtDkiOmJ7r1cjEOYalcQqO0ANMjhxQDBo2KNCSE-BJHt1L0-eBqTXKPLEGQEjoUmjZO5IdNnshHzZGA"
+                        target="_blank"><button class="btn btn-light bg-white rounded-pill shadow-sm"><i class="fas fa-file-alt mr-2"></i>Resume</button></a>
+                </div>
+                <img src="{% static 'img/Preto-E-Branco.PNG' %}" alt="" class="float-right" style="width: 300px; margin-top:-210px">
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="page-content-sobre" id="content2">
+        <div class="container pt-5" id="sobre">
+            <h2>{{sobremim.titulo_ing}}</h2>
+            <p class="pt-3 text-justify">{{sobremim.texto_ing}}</p>
+            <h2 class="mt-5">Formation</h2>
+            <div class="jumbotron jumbotron-fluid">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p style="margin-top: -30px;">Here there are some information about my education background, professional experiences and extracurricular courses.</p>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-pills justify-content-center mb-4" id="nav-pills" role="tablist">
+                            <li class="nav-item">
+                                <a href="#nav-item-01" class="nav-link active mr-4 mb-1" id="nav-pills-01" data-toggle="pill">Educational</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#nav-item-02" class="nav-link mr-4 mb-1" id="nav-pills-02" data-toggle="pill">Professional</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#nav-item-03" class="nav-link mb-1" id="nav-pills-03" data-toggle="pill">Extracurricular</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="nav-pills-content">
+                            <div class="tab-pane fade show active" id="nav-item-01" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {% for formacao in form_academica %}
+                                        <h3>{{formacao.subtitulo_ing}}</h3>
+                                        <p>{{formacao.texto_ing}}</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-item-02" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {% for formacao in form_profissional %}
+                                        <h3>{{formacao.subtitulo_ing}}</h3>
+                                        <p>{{formacao.texto_ing}}</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-item-03" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {% for formacao in form_complementar %}
+                                        <h3>{{formacao.subtitulo_ing}}</h3>
+                                        <p>{{formacao.texto_ing}}</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 style="margin-top: -50px;" class="mb-5" id="habilidades">Skills</h2>
+            <div class="row">
+                <div class="col-sm-6 img-habilidade">
+                    <img src="{% static 'img/html.png' %}" alt="" class="mb-2">
+                    <h5>HTML5</h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+                            90%
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 img-habilidade">
+                    <img src="{% static 'img/css.png' %}" alt="" class="mb-2">
+                    <h5>CSS3</h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+                            80%
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 img-habilidade">
+                    <img src="{% static 'img/javascript.png' %}" alt="" class="mb-2">
+                    <h5>JavaScript</h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%">
+                            30%
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 img-habilidade">
+                    <img src="{% static 'img/bootstrap.png' %}" alt="" class="mb-2">
+                    <h5>Bootstrap</h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
+                            75%
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 img-habilidade">
+                    <img src="{% static 'img/python.png' %}" alt="" class="mb-2">
+                    <h5>Python & Django</h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
+                            75%
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 img-habilidade">
+                    <img src="{% static 'img/c++.png' %}" alt="" class="mb-2">
+                    <h5>C/C++</h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+                            80%
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 img-habilidade">
+                    <img src="{% static 'img/java.png' %}" alt="" class="mb-2">
+                    <h5>Java</h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width:75%">
+                            75%
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 img-habilidade">
+                    <img src="{% static 'img/csharp.png' %}" alt="" class="mb-2">
+                    <h5>C#</h5>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped bg-green-progress" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
+                            60%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 class="my-5" id="portfolio">Portfolio</h2>
+            <div class="row justify-content-sm-center">
+                {% for card in card_port %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card mb-5">
+                        <div class="img-card-symbol">
+                            <img src="{{card.img_card.url}}" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title text-center">{{card.titulo_ing}}</h3>
+                            <hr>
+                            <p class="card-text text-center">{{card.subtitulo_ing}}</p>
+                        </div>
+                        <div class="card-body mt-3 text-right">
+                            <a href="#" class="card-link" data-toggle="modal" data-target="#siteModal-{{card.id}}">Know more</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-12">
+                        <p class="text-center">To check out some of my work done in such areas, access my portfolio below!</p>
+                        <button class="btn button-port d-flex justify-content-center mx-auto"> <a href="{% url 'port:index' %}" style="text-decoration: none; color: white;">Portfolio</a> </button>
+                    </div>
+                </div>
+            </div>
+            <h2 class="my-5" id="contato">Contact</h2>
+            <h4 class="text-center">Send me a message!</h4>
+            <form method="POST">
+                <div class="row">
+                    {% if show_script %}
+                    <script type="text/javascript">
+                        alert("Your message has been sent successfully!")
+                    </script>
+                    {% endif %} 
+                    {% csrf_token %} 
+                    {% for field in form_ing %} 
+                    {{ field }} 
+                    {% endfor %}
+                </div>
+                <button class="btn button-port mt-2 mb-5" type="submit" name="button-ing"><i class="fas fa-paper-plane mr-2 mt-1"></i>Send</button>
+            </form>
+        </div>
+    </div>
+    <div class="page-footer" id="content3" style="background-color: #48BBBE;">
+        <div class="container">
+            <h5 class="py-5 text-center">Mariana Brito Azevedo &copy - All rights reserved</h5>
+        </div>
+    </div>
+    {% endif %}
+
     <!--Modal-->
-    <div class="modal fade" id="siteModal1" tabindex="-1" role="dialog">
+    {% if LANGUAGE_CODE == 'pt-br' %}
+    {% for card in card_port %}
+    <div class="modal fade" id="siteModal-{{card.id}}" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-green">
-                    <h5 class="modal-title text-center">UX/UI Design</h5>
+                    <h5 class="modal-title text-center">{{card.titulo_port}}</h5>
                     <button class="close" type="button" data-dismiss="modal">
                         <span style="color: white;">&times</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>A sigla UX significa User Experience, ou seja, experiência do usuário. Assim, consiste na interação e relação entre o usuário e o produto ou serviço que ele está utilizando. Essa estratégia utilizada para a composição de websites trata-se
-                        em enxergar as necessidades do usuário, unindo os conceitos de empatia, usabilidade e tecnologia humanizada durante o desenvolvimento de um produto. Já a sigla UI significa User Interface, ou seja, interface do usuário. Ela está
-                        relacionada como toda a interação entre o usuário e o website em questão, abordando a criação de interfaces funcionais, intuitivas e fáceis de se utilizar, permitindo uma fácil interação.</p>
-                    <h6>Confira alguns dos meus projetos realizados nessa área!</h6>
+                    <p>{{card.modal_port}}</p>
                 </div>
                 <div class="modal-footer">
                     <a href="portfolio.html" style="text-decoration: none; color: white;" class="btn button-port">Conferir Portfólio</a>
@@ -376,49 +733,30 @@
             </div>
         </div>
     </div>
+    {% endfor %}
+    {% else %}
+    {% for card in card_port %}
+    <div class="modal fade" id="siteModal-{{card.id}}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-green">
+                    <h5 class="modal-title text-center">{{card.titulo_ing}}</h5>
+                    <button class="close" type="button" data-dismiss="modal">
+                        <span style="color: white;">&times</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>{{card.modal_ing}}</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="portfolio.html" style="text-decoration: none; color: white;" class="btn button-port">Access portfolio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
 
-    <!--Modal2-->
-    <div class="modal fade" id="siteModal2" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-green">
-                    <h5 class="modal-title text-center">Front-End</h5>
-                    <button class="close" type="button" data-dismiss="modal">
-                        <span style="color: white;">&times</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>A tecnologia front-end refere-se à parte visual de um web site, permitindo a interação entre o usuário e a interface gráfica do software. Ela utiliza como tecnologias o HTML, CSS e javascript para o seu desenvolvimento.</p>
-                    <h6>Confira alguns dos meus projetos realizados nessa área!</h6>
-                </div>
-                <div class="modal-footer">
-                    <a href="portfolio.html" style="text-decoration: none; color: white;" class="btn button-port">Conferir Portfólio</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--Modal3-->
-    <div class="modal fade" id="siteModal3" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-green">
-                    <h5 class="modal-title text-center">Back-End</h5>
-                    <button class="close" type="button" data-dismiss="modal">
-                        <span style="color: white;">&times</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>A tecnologia back-end refere-se à parte inteligente de um website ou sistema, em que o usuário não pode visualizar. Ele é responsável pelo armazenamento de informações em banco de dados, atender às requisições solicitadas pelo usuário,
-                        promover o envio de formulários e diversas outras ações relacionadas à "parte inteligente" do website.</p>
-                    <h6>Confira alguns dos meus projetos realizados nessa área!</h6>
-                </div>
-                <div class="modal-footer">
-                    <a href="portfolio.html" style="text-decoration: none; color: white;" class="btn button-port">Conferir Portfólio</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!--Scripts JS-->

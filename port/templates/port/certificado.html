@@ -1,0 +1,372 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Mariana Brito Azevedo</title>
+    <link rel="shortcut icon" href="{% static 'img/logo.PNG' %}">
+    <!--metas tag de responsividade e acentuação-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Links CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Asap&display=swap" rel="stylesheet">
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    {% if LANGUAGE_CODE == 'pt-br' %}
+    <div class="vertical-nav" id="sidebar">
+        <div class="py-3 px-3 mb-2">
+            <div class="media d-flex align-items-center"><img class="mx-auto mb-3" src="{% static 'img/logo.PNG' %}" alt=""></div>
+            <div class="media-body">
+                <h4 class="text-center">Mariana Brito Azevedo</h4>
+                <p class="text-center">Desenvolvedora Web</p>
+            </div>
+        </div>
+        <ul class="nav flex-column mb-0">
+            <li class="nav-item">
+                <a href="{% url 'core:index' %}" class="nav-link text-dark">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'port:index' %}" class="nav-link text-dark">
+                    <i class="fas fa-folder-open"></i> Portfólio
+                </a>
+            </li>
+        </ul>
+        <h5 class="py-2 text-center">Redes Sociais</h5>
+        <div class="social-media d-flex justify-content-center mx-auto" style="display: inline-block;">
+            <a href="https://instagram.com/maribazevedo_/" target="_blank"><img src="{% static 'img/insta.png' %}" alt="" class="mx-1"></a>
+            <a href="https://api.whatsapp.com/send?phone=5584988234626" target="_blank"><img src="{% static 'img/wpp.png' %}" alt="" class="mx-1"></a>
+            <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
+        </div>
+        <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+        <div class="d-flex justify-content-center mx-auto">
+            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                    <option value="" selected disabled>Idioma</option>
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Trocar" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+            </form>
+        </div>
+    </div>
+    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark" style="background-color: #1c878a;">
+        <div class="container">
+            <a href="#" class="navbar-brand h1 mb-0">Mariana Brito Azevedo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSite">
+                <ul class="navbar-nav ml-auto text-center">
+                    <li class="nav-item">
+                        <a href="{% url 'core:index' %}" class="nav-link text-dark">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'port:index' %}" class="nav-link text-dark">
+                            <i class="fas fa-folder-open"></i> Portfólio
+                        </a>
+                    </li>
+                </ul>
+                <h5 class="py-2 text-center">Redes Sociais</h5>
+                <div class="social-media d-flex justify-content-center mx-auto" style="display: inline-block;">
+                    <a href="https://instagram.com/maribazevedo_/" target="_blank"><img src="{% static 'img/insta.png' %}" alt="" class="mx-1"></a>
+                    <a href="https://api.whatsapp.com/send?phone=5584988234626" target="_blank"><img src="{% static 'img/wpp.png' %}" alt="" class="mx-1"></a>
+                    <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
+                </div>
+                <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+                <div class="d-flex justify-content-center mx-auto">
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                        <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                            <option value="" selected disabled>Idioma</option>
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Trocar" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+                    </form>
+                </div>
+            </div>
+            <!--collapse navbar-collapse-->
+        </div>
+        <!--container-->
+    </nav>
+    <div class="page-content p-5" id="content">
+        <div class="container">
+            <div class="inicio" id="home">
+                <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i>Menu</button>
+                <h1 class="pt-5">Certificados</h1>
+                <h3 style="color: #323232;">Pesquisar por:
+                    <a href="" class="typewrite" data-period="2000" data-type='[ "Back-end", "Front-end", "EJECT", "Projetos pessoais" ]' style="color: #323232; text-decoration: none;">
+                        <span class="wrap"></span>
+                    </a>
+                </h3>
+                <div class="busca mt-5">
+                    <form action="{% url 'port:search_certificado' %}" method="GET" value="{{request.GET.q}}">
+                        <input type="text" type="search" class="input-busca" name="q" value="{{request.GET.q}}" placeholder="Buscar por..." style="padding-left: 8px;">
+                        <button class="botao-busca" type="submit" name="submit">
+                            <img src="{% static 'img/lupa.png' %}" alt="" style="width: 30px;">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-content-port" id="content2" style="background-color: #fafafa;">
+        <div class="container">
+            <h4 class="text-center py-5">Abaixo seguem alguns dos meus certificados recebidos ao longo dos meus estudos</h4>
+            <div class="card-deck">
+                {% for certificado in certificados %}
+                <div class="card my-2">
+                    <a href="{{certificado.get_absolute_url}}"><img class="card-img-top" src="{{certificado.img.url}}" alt="{{certificado.title}}" style="height: 220px;"></a>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{certificado.titulo_port}}</h5>
+                    </div>
+                    <div class="card-footer" style="background-color: #1c878a;">
+                        <p class="card-text"><small style=" color: white;">Publicado em: {{certificado.published_date}}</small></p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% if certificados.has_other_pages %}
+                    <div class="t-paginador">
+                        <ul class="l-paginador">
+                        {% if certificados.has_previous %}
+                            <li><a href="?page={{ certificados.previous_page_number }}"><img src="{% static 'img/seta-esquerda.png' %}" alt="" style="height: 20px;"></a></li>
+                        {% else %}
+                            <li class="disabled"><span><img src="{% static 'img/seta-esquerda.png' %}" alt="" style="height: 20px;"></span></li>
+                        {% endif %}
+                        {% for i in certificados.paginator.page_range %}
+                            {% if certificados.number == i %}
+                            <li class="active"><span style="background-color: #d2f6f7; padding: 0px 5px; color: #030303;">{{ i }}</span></li>
+                            {% elif i > certificados.number|add:'-3' and i < certificados.number|add:'3' %}
+                            <li><a href="?page={{ i }}" style="color: white; text-decoration: none;">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if certificados.has_next %}
+                            <li><a href="?page={{ certificados.next_page_number }}"><img src="{% static 'img/seta-direita.png' %}" alt="" style="height: 20px;"></a></li>
+                        {% else %}
+                            <li class="disabled"><span><img src="{% static 'img/seta-direita.png' %}" alt="" style="height: 20px;"></span></li>
+                        {% endif %}
+
+                        </ul>
+                    </div>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="page-footer" id="content3" style="background-color: #48BBBE;">
+        <div class="container">
+            <h5 class="py-5 text-center">Mariana Brito Azevedo &copy - Todos os direitos reservados</h5>
+        </div>
+    </div>
+
+
+
+    {% else %}
+
+
+
+    <div class="vertical-nav" id="sidebar">
+        <div class="py-3 px-3 mb-2">
+            <div class="media d-flex align-items-center"><img class="mx-auto mb-3" src="{% static 'img/logo.PNG' %}" alt=""></div>
+            <div class="media-body">
+                <h4 class="text-center">Mariana Brito Azevedo</h4>
+                <p class="text-center">Programmer</p>
+            </div>
+        </div>
+        <ul class="nav flex-column mb-0">
+            <li class="nav-item">
+                <a href="{% url 'core:index' %}" class="nav-link text-dark">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'port:index' %}" class="nav-link text-dark">
+                    <i class="fas fa-folder-open"></i> Portfolio
+                </a>
+            </li>
+        </ul>
+        <h5 class="py-2 text-center">Social Media</h5>
+        <div class="social-media d-flex justify-content-center mx-auto" style="display: inline-block;">
+            <a href="https://instagram.com/maribazevedo_/" target="_blank"><img src="{% static 'img/insta.png' %}" alt="" class="mx-1"></a>
+            <a href="https://api.whatsapp.com/send?phone=5584988234626" target="_blank"><img src="{% static 'img/wpp.png' %}" alt="" class="mx-1"></a>
+            <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
+        </div>
+        <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+        <div class="d-flex justify-content-center mx-auto">
+            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                    <option value="" selected disabled>Language</option>
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Change" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+            </form>
+        </div>
+    </div>
+    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark" style="background-color: #1c878a;">
+        <div class="container">
+            <a href="#" class="navbar-brand h1 mb-0">Mariana Brito Azevedo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSite">
+                <ul class="navbar-nav ml-auto text-center">
+                    <li class="nav-item">
+                        <a href="{% url 'core:index' %}" class="nav-link text-dark">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'port:index' %}" class="nav-link text-dark">
+                            <i class="fas fa-folder-open"></i> Portfolio
+                        </a>
+                    </li>
+                </ul>
+                <h5 class="py-2 text-center">Social Media</h5>
+                <div class="social-media d-flex justify-content-center mx-auto" style="display: inline-block;">
+                    <a href="https://instagram.com/maribazevedo_/" target="_blank"><img src="{% static 'img/insta.png' %}" alt="" class="mx-1"></a>
+                    <a href="https://api.whatsapp.com/send?phone=5584988234626" target="_blank"><img src="{% static 'img/wpp.png' %}" alt="" class="mx-1"></a>
+                    <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
+                </div>
+                <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+                <div class="d-flex justify-content-center mx-auto">
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                        <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                            <option value="" selected disabled>Language</option>
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Change" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+                    </form>
+                </div>
+            </div>
+            <!--collapse navbar-collapse-->
+        </div>
+        <!--container-->
+    </nav>
+    <div class="page-content p-5" id="content">
+        <div class="container">
+            <div class="inicio" id="home">
+                <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i>Menu</button>
+                <h1 class="pt-5">Certificates</h1>
+                <h3 style="color: #323232;">Search for:
+                    <a href="" class="typewrite" data-period="2000" data-type='[ "Back-end", "Front-end", "EJECT", "Projetos pessoais" ]' style="color: #323232; text-decoration: none;">
+                        <span class="wrap"></span>
+                    </a>
+                </h3>
+                <div class="busca mt-5">
+                    <form action="{% url 'port:search_certificado' %}" method="GET" value="{{request.GET.q}}">
+                        <input type="text" type="search" class="input-busca" name="q" value="{{request.GET.q}}" placeholder="Search for..." style="padding-left: 8px;">
+                        <button class="botao-busca" type="submit" name="submit">
+                            <img src="{% static 'img/lupa.png' %}" alt="" style="width: 30px;">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-content-port" id="content2" style="background-color: #fafafa;">
+        <div class="container">
+            <h4 class="text-center py-5">Here, there are some of my certificates received during my studies</h4>
+            <div class="card-deck">
+                {% for certificado in certificados %}
+                <div class="card my-2">
+                    <a href="{{certificado.get_absolute_url}}"><img class="card-img-top" src="{{certificado.img.url}}" alt="{{certificado.titulo_ing}}" style="height: 220px;"></a>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{certificado.titulo_ing}}</h5>
+                    </div>
+                    <div class="card-footer" style="background-color: #1c878a;">
+                        <p class="card-text"><small style=" color: white;">Publicado em: {{certificado.published_date}}</small></p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% if certificados.has_other_pages %}
+                    <div class="t-paginador">
+                        <ul class="l-paginador">
+                        {% if certificados.has_previous %}
+                            <li><a href="?page={{ certificados.previous_page_number }}"><img src="{% static 'img/seta-esquerda.png' %}" alt="" style="height: 20px;"></a></li>
+                        {% else %}
+                            <li class="disabled"><span><img src="{% static 'img/seta-esquerda.png' %}" alt="" style="height: 20px;"></span></li>
+                        {% endif %}
+                        {% for i in certificados.paginator.page_range %}
+                            {% if certificados.number == i %}
+                            <li class="active"><span style="background-color: #d2f6f7; padding: 0px 5px; color: #030303;">{{ i }}</span></li>
+                            {% elif i > certificados.number|add:'-3' and i < certificados.number|add:'3' %}
+                            <li><a href="?page={{ i }}" style="color: white; text-decoration: none;">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if certificados.has_next %}
+                            <li><a href="?page={{ certificados.next_page_number }}"><img src="{% static 'img/seta-direita.png' %}" alt="" style="height: 20px;"></a></li>
+                        {% else %}
+                            <li class="disabled"><span><img src="{% static 'img/seta-direita.png' %}" alt="" style="height: 20px;"></span></li>
+                        {% endif %}
+
+                        </ul>
+                    </div>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="page-footer" id="content3" style="background-color: #48BBBE;">
+        <div class="container">
+            <h5 class="py-5 text-center">Mariana Brito Azevedo &copy - All rights reserved</h5>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <!--Scripts JS-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/text.js' %}"></script>
+    <!--Scripts jQuery, Popper e Bootstrap-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+</body>
+
+</html>

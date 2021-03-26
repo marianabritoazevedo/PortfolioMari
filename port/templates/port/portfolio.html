@@ -1,4 +1,6 @@
 {% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +23,8 @@
 
 </head>
 
+{% if LANGUAGE_CODE == 'pt-br' %}
+
 <body>
     <div class="vertical-nav" id="sidebar">
         <div class="py-3 px-3 mb-2">
@@ -37,23 +41,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{% url 'core:index' %}" class="nav-link text-dark">
-                    <i class="fa fa-user-circle"></i> Sobre
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{% url 'core:index' %}" class="nav-link text-dark">
-                    <i class="fas fa-code"></i> Habilidades
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{% url 'core:index' %}" class="nav-link text-dark">
-                    <i class="fas fa-folder-open"></i> Portfólio
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{% url 'core:index' %}" class="nav-link text-dark">
-                    <i class="fas fa-phone"></i> Contato
+                <a href="{% url 'port:certificado' %}" class="nav-link text-dark">
+                    <i class="fas fa-certificate"></i> Certificados
                 </a>
             </li>
         </ul>
@@ -64,6 +53,23 @@
             <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
         </div>
         <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+        <div class="d-flex justify-content-center mx-auto">
+            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                    <option value="" selected disabled>Idioma</option>
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Trocar" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+            </form>
+        </div>
     </div>
     <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark" style="background-color: #1c878a;">
         <div class="container">
@@ -79,23 +85,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'core:index' %}" class="nav-link text-dark">
-                            <i class="fa fa-user-circle"></i> Sobre
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'core:index' %}" class="nav-link text-dark">
-                            <i class="fas fa-code"></i> Habilidades
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'core:index' %}" class="nav-link text-dark">
-                            <i class="fas fa-folder-open"></i> Portfólio
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'core:index' %}" class="nav-link text-dark">
-                            <i class="fas fa-phone"></i> Contato
+                        <a href="{% url 'port:certificado' %}" class="nav-link text-dark">
+                            <i class="fas fa-certificate"></i> Certificados
                         </a>
                     </li>
                 </ul>
@@ -106,6 +97,23 @@
                     <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
                 </div>
                 <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+                <div class="d-flex justify-content-center mx-auto">
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                        <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                            <option value="" selected disabled>Idioma</option>
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Trocar" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+                    </form>
+                </div>
             </div>
             <!--collapse navbar-collapse-->
         </div>
@@ -134,13 +142,13 @@
     </div>
     <div class="page-content-port" id="content2" style="background-color: #fafafa;">
         <div class="container">
-            <h4 class="text-center py-5">Abaixo seguem alguns dos meus trabalhos realizados na área de programação web</h4>
+            <h4 class="text-center py-5">Abaixo seguem alguns dos meus trabalhos realizados na área da computação</h4>
             <div class="card-deck">
                 {% for post in posts %}
                 <div class="card my-2">
                     <a href="{{post.get_absolute_url}}"><img class="card-img-top" src="{{post.img_card.url}}" alt="{{post.title}}" style="height: 220px;"></a>
                     <div class="card-body">
-                        <h5 class="card-title text-center">{{post.title}}</h5>
+                        <h5 class="card-title text-center">{{post.titulo_port}}</h5>
                         <p class="text-center">Tecnologias utilizadas: {{post.tecnologias}}</p>
                     </div>
                     <div class="card-footer" style="background-color: #1c878a;">
@@ -148,34 +156,32 @@
                     </div>
                 </div>
                 {% endfor %}
-            </div>
-            <!--<div class="row d-flex justify-content-center pt-3">
                 {% if posts.has_other_pages %}
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
+                    <div class="t-paginador">
+                        <ul class="l-paginador">
                         {% if posts.has_previous %}
-                        <li class="page-item px-2 mx-1">
-                            <a href="?page={{ posts.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
-                        </li>
+                            <li><a href="?page={{ posts.previous_page_number }}"><img src="{% static 'img/seta-esquerda.png' %}" alt="" style="height: 20px;"></a></li>
                         {% else %}
-                        <li class="page-item disabled px-2 mx-1"><i class="fas fa-arrow-left"></i></li>
-                        {% endif %} {% for i in posts.paginator.page_range %} {% if posts.number == i %}
-                        <li class="page-item active px-2 mx-1" style="background-color: #226c70; border-radius: 2px; color: #ffffff;"><span>{{ i }} <span class="sr-only">(current)</span></span>
-                        </li>
-                        {% else %}
-                        <li class="page-item px-2 mx-1"><a href="?page={{ i }}">{{ i }}</a></li>
-                        {% endif %} {% endfor %} {% if posts.has_next %}
-                        <li class="page-item px-2 mx-1">
-                            <a href="?page={{ posts.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
-                        </li>
-                        {% else %}
-                        <li class=" page-item disabled px-2"><span><i class="fas fa-arrow-right"></i></span></li>
+                            <li class="disabled"><span><img src="{% static 'img/seta-esquerda.png' %}" alt="" style="height: 20px;"></span></li>
                         {% endif %}
-                    </ul>
-                </nav>
+                        {% for i in posts.paginator.page_range %}
+                            {% if posts.number == i %}
+                            <li class="active"><span style="background-color: #d2f6f7; padding: 0px 5px; color: #030303;">{{ i }}</span></li>
+                            {% elif i > posts.number|add:'-3' and i < posts.number|add:'3' %}
+                            <li><a href="?page={{ i }}" style="color: white; text-decoration: none;">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if posts.has_next %}
+                            <li><a href="?page={{ posts.next_page_number }}"><img src="{% static 'img/seta-direita.png' %}" alt="" style="height: 20px;"></a></li>
+                        {% else %}
+                            <li class="disabled"><span><img src="{% static 'img/seta-direita.png' %}" alt="" style="height: 20px;"></span></li>
+                        {% endif %}
 
-                {% endif %}
-            </div>-->
+                        </ul>
+                    </div>
+                    {% endif %}
+            </div>
+            
         </div>
     </div>
     <div class="page-footer" id="content3" style="background-color: #48BBBE;">
@@ -183,6 +189,176 @@
             <h5 class="py-5 text-center">Mariana Brito Azevedo &copy - Todos os direitos reservados</h5>
         </div>
     </div>
+
+
+
+    {% else %}
+
+
+<body>
+    <div class="vertical-nav" id="sidebar">
+        <div class="py-3 px-3 mb-2">
+            <div class="media d-flex align-items-center"><img class="mx-auto mb-3" src="{% static 'img/logo.PNG' %}" alt=""></div>
+            <div class="media-body">
+                <h4 class="text-center">Mariana Brito Azevedo</h4>
+                <p class="text-center">Programmer</p>
+            </div>
+        </div>
+        <ul class="nav flex-column mb-0">
+            <li class="nav-item">
+                <a href="{% url 'core:index' %}" class="nav-link text-dark">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'port:certificado' %}" class="nav-link text-dark">
+                    <i class="fas fa-certificate"></i> Certificates
+                </a>
+            </li>
+        </ul>
+        <h5 class="py-2 text-center">Social Media</h5>
+        <div class="social-media d-flex justify-content-center mx-auto" style="display: inline-block;">
+            <a href="https://instagram.com/maribazevedo_/" target="_blank"><img src="{% static 'img/insta.png' %}" alt="" class="mx-1"></a>
+            <a href="https://api.whatsapp.com/send?phone=5584988234626" target="_blank"><img src="{% static 'img/wpp.png' %}" alt="" class="mx-1"></a>
+            <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
+        </div>
+        <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+        <div class="d-flex justify-content-center mx-auto">
+            <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                    <option value="" selected disabled>Language</option>
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Change" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+            </form>
+        </div>
+    </div>
+    <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark" style="background-color: #1c878a;">
+        <div class="container">
+            <a href="#" class="navbar-brand h1 mb-0">Mariana Brito Azevedo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSite">
+                <ul class="navbar-nav ml-auto text-center">
+                    <li class="nav-item">
+                        <a href="{% url 'core:index' %}" class="nav-link text-dark">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'port:certificado' %}" class="nav-link text-dark">
+                            <i class="fas fa-certificate"></i> Certificates
+                        </a>
+                    </li>
+                </ul>
+                <h5 class="py-2 text-center">Social Media</h5>
+                <div class="social-media d-flex justify-content-center mx-auto" style="display: inline-block;">
+                    <a href="https://instagram.com/maribazevedo_/" target="_blank"><img src="{% static 'img/insta.png' %}" alt="" class="mx-1"></a>
+                    <a href="https://api.whatsapp.com/send?phone=5584988234626" target="_blank"><img src="{% static 'img/wpp.png' %}" alt="" class="mx-1"></a>
+                    <a href="https://www.linkedin.com/in/mariana-brito-azevedo/" target="_blank"><img src="{% static 'img/linkedin.png' %}" alt="" class="mx-1"></a>
+                </div>
+                <p class="text-center mt-1">mari.brito.azevedo@gmail.com</p>
+                <div class="d-flex justify-content-center mx-auto">
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                        <select name="language" style="outline: 0; border: 1px solid #aaaaaa; border-radius: 5px;">
+                            <option value="" selected disabled>Language</option>
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Change" style="height: 25px; background-color: #1c878a; color: white; outline: 0; border: 0; border-radius: 5px; cursor: pointer;"/>
+                    </form>
+                </div>
+            </div>
+            <!--collapse navbar-collapse-->
+        </div>
+        <!--container-->
+    </nav>
+    <div class="page-content p-5" id="content">
+        <div class="container">
+            <div class="inicio" id="home">
+                <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i>Menu</button>
+                <h1 class="pt-5">Portfolio</h1>
+                <h3 style="color: #323232;">Search for:
+                    <a href="" class="typewrite" data-period="2000" data-type='[ "Back-end", "Front-end", "Python", "Personal projects" ]' style="color: #323232; text-decoration: none;">
+                        <span class="wrap"></span>
+                    </a>
+                </h3>
+                <div class="busca mt-5">
+                    <form action="{% url 'port:search' %}" method="GET" value="{{request.GET.q}}">
+                        <input type="text" type="search" class="input-busca" name="q" value="{{request.GET.q}}" placeholder="search for..." style="padding-left: 8px;">
+                        <button class="botao-busca" type="submit" name="submit">
+                            <img src="{% static 'img/lupa.png' %}" alt="" style="width: 30px;">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-content-port" id="content2" style="background-color: #fafafa;">
+        <div class="container">
+            <h4 class="text-center py-5">Here, there are some of my work done in the computing area</h4>
+            <div class="card-deck">
+                {% for post in posts %}
+                <div class="card my-2">
+                    <a href="{{post.get_absolute_url}}"><img class="card-img-top" src="{{post.img_card.url}}" alt="{{post.title}}" style="height: 220px;"></a>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{post.titulo_ing}}</h5>
+                        <p class="text-center">Technologies: {{post.tecnologias}}</p>
+                    </div>
+                    <div class="card-footer" style="background-color: #1c878a;">
+                        <p class="card-text"><small style=" color: white;">Publicado em: {{post.published_date}}</small></p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% if posts.has_other_pages %}
+                    <div class="tabela-paginador">
+                        <ul class="lista-paginador">
+                        {% if posts.has_previous %}
+                            <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><span>&laquo;</span></li>
+                        {% endif %}
+                        {% for i in posts.paginator.page_range %}
+                            {% if posts.number == i %}
+                            <li class="active"><span style="background-color: #ECC004; padding: 0px 5px;">{{ i }}</span></li>
+                            {% elif i > posts.number|add:'-3' and i < posts.number|add:'3' %}
+                            <li><a href="?page={{ i }}" style="color: white; text-decoration: none;">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if posts.has_next %}
+                            <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><span>&raquo;</span></li>
+                        {% endif %}
+
+                        </ul>
+                    </div>
+                    {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="page-footer" id="content3" style="background-color: #48BBBE;">
+        <div class="container">
+            <h5 class="py-5 text-center">Mariana Brito Azevedo &copy - Todos os direitos reservados</h5>
+        </div>
+    </div>
+    {% endif %}
 
     <!--Scripts JS-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

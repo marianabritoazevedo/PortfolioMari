@@ -227,6 +227,37 @@ textarea {
     background-color: #127073;
 }
 
+.t-paginador {
+    width: 95.5%;
+    height: 40px;
+    background: #127073;
+    margin-left: 15px;
+    margin-bottom: 50px;
+    margin-top: 15px;
+}
+
+.l-paginador {
+    font-size: 14px;
+    line-height: 17px;
+    color: #F2F2F2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
+
+.l-paginador li{
+    padding-right: 25px;
+    list-style-type: none;
+}
+
+.l-paginador li:hover{
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 22px;
+}
+
 @media screen and (max-width: 1000px) {
     nav {
         display: block !important;
